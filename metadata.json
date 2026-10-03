@@ -1,0 +1,8 @@
+{
+  "name": "Remix ระบบตรวจสอบรหัสโรค Sepsis \u0026 Shock สปสช.",
+  "description": "โปรแกรมตรวจสอบการให้รหัสโรคและการรักษาในกลุ่ม Sepsis, Septic Shock และ 47 เงื่อนไขเฝ้าระวังผู้ป่วยใน ตามเกณฑ์ Clinical Audit และ AI Pre-Audit (CR1, CR37, พิมพ์เขียว 47 ข้อ) ของ สปสช. พร้อมผังการตัดสิน The Trap และระบบตรวจสอบไฟล์ 18 แฟ้ม e-Claim",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

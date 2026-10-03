@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Remix ระบบตรวจสอบรหัสโรค Sepsis & Shock สปสช.</title>
+    <meta name="description" content="โปรแกรมตรวจสอบการให้รหัสโรคและการรักษาในกลุ่ม Sepsis, Septic Shock และ 47 เงื่อนไขเฝ้าระวังผู้ป่วยใน ตามเกณฑ์ Clinical Audit และ AI Pre-Audit (CR1, CR37, พิมพ์เขียว 47 ข้อ) ของ สปสช. พร้อมผังการตัดสิน The Trap และระบบตรวจสอบไฟล์ 18 แฟ้ม e-Claim" />
+    <meta property="og:title" content="Remix ระบบตรวจสอบรหัสโรค Sepsis & Shock สปสช." />
+    <meta property="og:description" content="โปรแกรมตรวจสอบการให้รหัสโรคและการรักษาในกลุ่ม Sepsis, Septic Shock และ 47 เงื่อนไขเฝ้าระวังผู้ป่วยใน ตามเกณฑ์ Clinical Audit และ AI Pre-Audit (CR1, CR37, พิมพ์เขียว 47 ข้อ) ของ สปสช. พร้อมผังการตัดสิน The Trap และระบบตรวจสอบไฟล์ 18 แฟ้ม e-Claim" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+      try {
+        const savedTheme = localStorage.getItem('app_theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+          document.documentElement.style.colorScheme = 'dark';
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.documentElement.style.colorScheme = 'light';
+        }
+      } catch (e) {}
+    </script>
+  </head>
+  <body class="font-['Sarabun',sans-serif] bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased selection:bg-emerald-100 selection:text-emerald-900 transition-colors duration-200">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

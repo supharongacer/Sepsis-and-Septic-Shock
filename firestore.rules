@@ -1,0 +1,80 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default Deny Catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper Primitives
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Validation Blueprint for AuditRecord
+    function isValidAuditRecord(data) {
+      return data.userId is string && data.userId == request.auth.uid &&
+        data.an is string && data.an.size() > 0 && data.an.size() <= 30 &&
+        data.pdx is string && data.pdx.size() > 0 && data.pdx.size() <= 20 &&
+        data.verdict in ['PASS', 'WARNING', 'DENY'] &&
+        (!('hn' in data) || (data.hn is string && data.hn.size() <= 30)) &&
+        (!('patientName' in data) || (data.patientName is string && data.patientName.size() <= 150)) &&
+        (!('ruleId' in data) || (data.ruleId is string && data.ruleId.size() <= 50)) &&
+        (!('primaryIssue' in data) || (data.primaryIssue is string && data.primaryIssue.size() <= 500)) &&
+        (!('estimatedClaim' in data) || (data.estimatedClaim is number)) &&
+        (!('atRiskClaim' in data) || (data.atRiskClaim is number)) &&
+        (!('secondaryDxCount' in data) || (data.secondaryDxCount is number)) &&
+        (!('complicationCount' in data) || (data.complicationCount is number)) &&
+        (!('comorbidCount' in data) || (data.comorbidCount is number)) &&
+        (!('auditNotes' in data) || (data.auditNotes is string && data.auditNotes.size() <= 1000)) &&
+        (!('userEmail' in data) || (data.userEmail is string && data.userEmail.size() <= 120));
+    }
+
+    // Audit Records Collection
+    match /audit_records/{recordId} {
+      allow get: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      
+      allow create: if isSignedIn() &&
+        isValidId(recordId) &&
+        isValidAuditRecord(incoming()) &&
+        incoming().createdAt == request.time &&
+        incoming().updatedAt == request.time;
+        
+      allow update: if isSignedIn() &&
+        isValidId(recordId) &&
+        resource.data.userId == request.auth.uid &&
+        isValidAuditRecord(incoming()) &&
+        incoming().userId == existing().userId &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().updatedAt == request.time &&
+        incoming().diff(existing()).affectedKeys().hasOnly([
+          'verdict', 'primaryIssue', 'ruleId', 'estimatedClaim', 'atRiskClaim', 
+          'secondaryDxCount', 'complicationCount', 'comorbidCount', 'auditNotes', 'updatedAt'
+        ]);
+
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // Connection testing
+    match /test/connection {
+      allow get: if true;
+    }
+  }
+}

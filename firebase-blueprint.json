@@ -1,0 +1,100 @@
+{
+  "entities": {
+    "auditRecord": {
+      "title": "AuditRecord",
+      "description": "A saved audit assessment for an IP patient admission (AN/HN) checking NHSO coding rules",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique record identifier"
+        },
+        "userId": {
+          "type": "string",
+          "description": "User UID who saved this audit record"
+        },
+        "userEmail": {
+          "type": "string",
+          "description": "Email address of the auditor"
+        },
+        "an": {
+          "type": "string",
+          "maxLength": 30,
+          "description": "Admission number (AN)"
+        },
+        "hn": {
+          "type": "string",
+          "maxLength": 30,
+          "description": "Hospital number (HN)"
+        },
+        "patientName": {
+          "type": "string",
+          "maxLength": 150,
+          "description": "Patient display name"
+        },
+        "pdx": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "Principal Diagnosis ICD-10 code"
+        },
+        "verdict": {
+          "type": "string",
+          "enum": ["PASS", "WARNING", "DENY"],
+          "description": "Evaluation outcome status"
+        },
+        "ruleId": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Triggered rule ID or CR code"
+        },
+        "primaryIssue": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Primary issue or guideline summary"
+        },
+        "estimatedClaim": {
+          "type": "number",
+          "description": "Total estimated claim reimbursement amount in Baht"
+        },
+        "atRiskClaim": {
+          "type": "number",
+          "description": "Financial risk or clawback amount in Baht"
+        },
+        "secondaryDxCount": {
+          "type": "number",
+          "description": "Total number of secondary diagnoses"
+        },
+        "complicationCount": {
+          "type": "number",
+          "description": "Count of complication diagnoses"
+        },
+        "comorbidCount": {
+          "type": "number",
+          "description": "Count of comorbid diagnoses"
+        },
+        "auditNotes": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "Auditor notes or correction directions"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Audit record creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Audit record last update timestamp"
+        }
+      },
+      "required": ["userId", "an", "pdx", "verdict"]
+    }
+  },
+  "firestore": {
+    "/audit_records/{recordId}": {
+      "schema": "auditRecord",
+      "description": "Persistent audit findings and review records saved by hospital auditors"
+    }
+  }
+}
